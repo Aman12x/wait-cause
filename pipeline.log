@@ -1,0 +1,223 @@
+2026-02-25 02:59:12,397 [INFO] Running pipeline | step=all | months=[('2023', '06')] | sample=True
+2026-02-25 02:59:12,949 [INFO] 
+============================================================
+2026-02-25 02:59:12,950 [INFO] STEP: Download
+2026-02-25 02:59:12,950 [INFO] ============================================================
+2026-02-25 02:59:27,306 [INFO] Running pipeline | step=all | months=[('2023', '06'), ('2023', '07'), ('2023', '08')] | sample=False
+2026-02-25 02:59:27,439 [INFO] 
+============================================================
+2026-02-25 02:59:27,440 [INFO] STEP: Download
+2026-02-25 02:59:27,440 [INFO] ============================================================
+2026-02-25 02:59:27,440 [INFO] Downloading 3 months of data...
+2026-02-25 02:59:27,440 [INFO] Downloading TLC zone lookup...
+2026-02-25 02:59:27,669 [INFO] Saved zone lookup: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/tlc_zones/taxi_zone_lookup.csv
+2026-02-25 02:59:27,670 [INFO] Downloading TLC zone shapefile...
+2026-02-25 02:59:27,763 [INFO] Extracted shapefile to: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/tlc_zones
+2026-02-25 02:59:27,764 [INFO] ── 2023-06 ──
+2026-02-25 02:59:27,764 [INFO] Downloading: https://d37ci6vzurychx.cloudfront.net/trip-data/fhvhv_tripdata_2023-06.parquet
+2026-02-25 02:59:34,066 [INFO] Saved: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/tlc_fhvhv/fhvhv_tripdata_2023-06.parquet (498.8 MB)
+2026-02-25 02:59:34,067 [WARNING] No NOAA token found in env var 'NOAA_API_TOKEN'. Generating synthetic weather data for development instead.
+2026-02-25 02:59:44,193 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_jfk_2023_06.csv (720 hourly records)
+2026-02-25 02:59:44,196 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_lga_2023_06.csv (720 hourly records)
+2026-02-25 02:59:44,198 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_central_park_2023_06.csv (720 hourly records)
+2026-02-25 02:59:44,199 [INFO] ── 2023-07 ──
+2026-02-25 02:59:44,199 [INFO] Downloading: https://d37ci6vzurychx.cloudfront.net/trip-data/fhvhv_tripdata_2023-07.parquet
+2026-02-25 02:59:50,211 [INFO] Saved: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/tlc_fhvhv/fhvhv_tripdata_2023-07.parquet (492.3 MB)
+2026-02-25 02:59:50,213 [WARNING] No NOAA token found in env var 'NOAA_API_TOKEN'. Generating synthetic weather data for development instead.
+2026-02-25 02:59:50,218 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_jfk_2023_07.csv (744 hourly records)
+2026-02-25 02:59:50,222 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_lga_2023_07.csv (744 hourly records)
+2026-02-25 02:59:50,226 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_central_park_2023_07.csv (744 hourly records)
+2026-02-25 02:59:50,226 [INFO] ── 2023-08 ──
+2026-02-25 02:59:50,226 [INFO] Downloading: https://d37ci6vzurychx.cloudfront.net/trip-data/fhvhv_tripdata_2023-08.parquet
+2026-02-25 02:59:56,330 [INFO] Saved: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/tlc_fhvhv/fhvhv_tripdata_2023-08.parquet (450.3 MB)
+2026-02-25 02:59:56,331 [WARNING] No NOAA token found in env var 'NOAA_API_TOKEN'. Generating synthetic weather data for development instead.
+2026-02-25 02:59:56,335 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_jfk_2023_08.csv (744 hourly records)
+2026-02-25 02:59:56,338 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_lga_2023_08.csv (744 hourly records)
+2026-02-25 02:59:56,341 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_central_park_2023_08.csv (744 hourly records)
+2026-02-25 02:59:56,341 [INFO] Download complete.
+2026-02-25 02:59:56,341 [INFO] ✓ Download completed in 28.9s
+2026-02-25 02:59:57,251 [INFO] 
+============================================================
+2026-02-25 02:59:57,251 [INFO] STEP: Clean
+2026-02-25 02:59:57,251 [INFO] ============================================================
+2026-02-25 02:59:57,251 [INFO] Loading 3 parquet file(s) via DuckDB...
+2026-02-25 03:02:21,164 [INFO] Running pipeline | step=all | months=[('2023', '06'), ('2023', '07'), ('2023', '08')] | sample=False
+2026-02-25 03:02:21,315 [INFO] 
+============================================================
+2026-02-25 03:02:21,316 [INFO] STEP: Download
+2026-02-25 03:02:21,316 [INFO] ============================================================
+2026-02-25 03:02:21,317 [INFO] Downloading 3 months of data...
+2026-02-25 03:02:21,317 [INFO] Zone lookup already exists, skipping.
+2026-02-25 03:02:21,332 [INFO] Downloading TLC zone shapefile...
+2026-02-25 03:02:21,591 [INFO] Extracted shapefile to: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/tlc_zones
+2026-02-25 03:02:21,592 [INFO] ── 2023-06 ──
+2026-02-25 03:02:21,592 [INFO] Already exists, skipping: fhvhv_tripdata_2023-06.parquet
+2026-02-25 03:02:21,592 [WARNING] No NOAA token found in env var 'NOAA_API_TOKEN'. Generating synthetic weather data for development instead.
+2026-02-25 03:02:22,234 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_jfk_2023_06.csv (720 hourly records)
+2026-02-25 03:02:22,236 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_lga_2023_06.csv (720 hourly records)
+2026-02-25 03:02:22,238 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_central_park_2023_06.csv (720 hourly records)
+2026-02-25 03:02:22,238 [INFO] ── 2023-07 ──
+2026-02-25 03:02:22,238 [INFO] Already exists, skipping: fhvhv_tripdata_2023-07.parquet
+2026-02-25 03:02:22,239 [WARNING] No NOAA token found in env var 'NOAA_API_TOKEN'. Generating synthetic weather data for development instead.
+2026-02-25 03:02:22,242 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_jfk_2023_07.csv (744 hourly records)
+2026-02-25 03:02:22,245 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_lga_2023_07.csv (744 hourly records)
+2026-02-25 03:02:22,248 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_central_park_2023_07.csv (744 hourly records)
+2026-02-25 03:02:22,248 [INFO] ── 2023-08 ──
+2026-02-25 03:02:22,248 [INFO] Already exists, skipping: fhvhv_tripdata_2023-08.parquet
+2026-02-25 03:02:22,248 [WARNING] No NOAA token found in env var 'NOAA_API_TOKEN'. Generating synthetic weather data for development instead.
+2026-02-25 03:02:22,251 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_jfk_2023_08.csv (744 hourly records)
+2026-02-25 03:02:22,253 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_lga_2023_08.csv (744 hourly records)
+2026-02-25 03:02:22,256 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_central_park_2023_08.csv (744 hourly records)
+2026-02-25 03:02:22,256 [INFO] Download complete.
+2026-02-25 03:02:22,257 [INFO] ✓ Download completed in 0.9s
+2026-02-25 03:02:22,386 [INFO] 
+============================================================
+2026-02-25 03:02:22,387 [INFO] STEP: Clean
+2026-02-25 03:02:22,387 [INFO] ============================================================
+2026-02-25 03:02:22,387 [INFO] Loading 3 parquet file(s) via DuckDB...
+2026-02-25 03:04:37,265 [INFO] Loaded 56,820,900 raw rows
+2026-02-25 03:14:36,316 [INFO] Starting rows: 56,820,900
+2026-02-25 03:16:41,443 [INFO] After removing null wait_time: 40,722,255 (16,098,645 dropped)
+2026-02-25 03:20:25,296 [INFO] After wait_time bounds [0.5, 30.0]: 38,906,439
+2026-02-25 03:21:36,581 [INFO] After zone filter: 38,904,887
+2026-02-25 03:23:23,896 [INFO] After surge proxy filter: 38,855,744
+2026-02-25 03:25:01,434 [INFO] Final rows: 38,855,744 (68.4% of original)
+2026-02-25 03:25:05,080 [INFO] Running validation assertions...
+2026-02-25 03:33:24,126 [INFO] Running pipeline | step=all | months=[('2023', '06'), ('2023', '07'), ('2023', '08')] | sample=False
+2026-02-25 03:33:24,284 [INFO] 
+============================================================
+2026-02-25 03:33:24,284 [INFO] STEP: Download
+2026-02-25 03:33:24,284 [INFO] ============================================================
+2026-02-25 03:33:24,284 [INFO] Downloading 3 months of data...
+2026-02-25 03:33:24,284 [INFO] Zone lookup already exists, skipping.
+2026-02-25 03:33:24,284 [INFO] Downloading TLC zone shapefile...
+2026-02-25 03:33:24,504 [INFO] Extracted shapefile to: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/tlc_zones
+2026-02-25 03:33:24,505 [INFO] ── 2023-06 ──
+2026-02-25 03:33:24,505 [INFO] Already exists, skipping: fhvhv_tripdata_2023-06.parquet
+2026-02-25 03:33:24,505 [WARNING] No NOAA token found in env var 'NOAA_API_TOKEN'. Generating synthetic weather data for development instead.
+2026-02-25 03:33:25,087 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_jfk_2023_06.csv (720 hourly records)
+2026-02-25 03:33:25,089 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_lga_2023_06.csv (720 hourly records)
+2026-02-25 03:33:25,091 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_central_park_2023_06.csv (720 hourly records)
+2026-02-25 03:33:25,091 [INFO] ── 2023-07 ──
+2026-02-25 03:33:25,091 [INFO] Already exists, skipping: fhvhv_tripdata_2023-07.parquet
+2026-02-25 03:33:25,091 [WARNING] No NOAA token found in env var 'NOAA_API_TOKEN'. Generating synthetic weather data for development instead.
+2026-02-25 03:33:25,094 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_jfk_2023_07.csv (744 hourly records)
+2026-02-25 03:33:25,096 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_lga_2023_07.csv (744 hourly records)
+2026-02-25 03:33:25,098 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_central_park_2023_07.csv (744 hourly records)
+2026-02-25 03:33:25,098 [INFO] ── 2023-08 ──
+2026-02-25 03:33:25,098 [INFO] Already exists, skipping: fhvhv_tripdata_2023-08.parquet
+2026-02-25 03:33:25,098 [WARNING] No NOAA token found in env var 'NOAA_API_TOKEN'. Generating synthetic weather data for development instead.
+2026-02-25 03:33:25,101 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_jfk_2023_08.csv (744 hourly records)
+2026-02-25 03:33:25,103 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_lga_2023_08.csv (744 hourly records)
+2026-02-25 03:33:25,105 [INFO] Generated synthetic weather: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/raw/noaa_weather/noaa_central_park_2023_08.csv (744 hourly records)
+2026-02-25 03:33:25,105 [INFO] Download complete.
+2026-02-25 03:33:25,105 [INFO] ✓ Download completed in 0.8s
+2026-02-25 03:33:25,207 [INFO] 
+============================================================
+2026-02-25 03:33:25,207 [INFO] STEP: Clean
+2026-02-25 03:33:25,207 [INFO] ============================================================
+2026-02-25 03:33:25,207 [INFO] Loading 3 parquet file(s) via DuckDB...
+2026-02-25 03:33:52,294 [INFO] Loaded 56,820,900 raw rows
+2026-02-25 03:39:05,390 [INFO] Starting rows: 56,820,900
+2026-02-25 03:40:42,344 [INFO] After removing null wait_time: 56,820,900 (0 dropped)
+2026-02-25 03:41:49,790 [INFO] After wait_time bounds [0.5, 30.0]: 54,756,440
+2026-02-25 03:44:53,906 [INFO] After zone filter: 54,753,928
+2026-02-25 03:48:16,979 [INFO] After surge proxy filter: 54,697,055
+2026-02-25 03:49:55,938 [INFO] Final rows: 54,697,055 (96.3% of original)
+2026-02-25 03:49:59,047 [INFO] Running validation assertions...
+2026-02-25 03:50:51,199 [WARNING] High null rate columns: {'on_scene_datetime': 0.2896190846106797}
+2026-02-25 03:50:51,206 [INFO] Validation passed. Cancellation rate: 0.290
+2026-02-25 03:52:06,262 [INFO] Saved cleaned trips: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/processed/trips_clean.parquet
+2026-02-25 03:52:06,264 [INFO] ✓ Clean completed in 1121.1s
+2026-02-25 03:52:06,276 [INFO] 
+============================================================
+2026-02-25 03:52:06,276 [INFO] STEP: Join
+2026-02-25 03:52:06,276 [INFO] ============================================================
+2026-02-25 03:52:12,822 [INFO] Loaded weather: 6,624 hourly records across 3 stations
+2026-02-25 03:52:12,830 [INFO] Loaded zone lookup: 265 zones
+2026-02-25 03:52:12,830 [INFO] Building master join from 54,697,055 trips...
+2026-02-25 03:52:52,426 [INFO] After zone join: 54,697,055 rows (null borough: 0)
+2026-02-25 03:53:43,920 [INFO] After weather join: 54,697,055 rows
+2026-02-25 03:54:08,816 [INFO] Rain null rate: 0.000 ✓
+2026-02-25 03:54:10,217 [INFO] Master dataset: 54,697,055 rows, 21 columns
+2026-02-25 03:54:10,482 [INFO] Cancellation rate: 0.290
+2026-02-25 03:54:10,595 [INFO] Rain rate: 0.047
+2026-02-25 03:55:01,813 [INFO] Saved master dataset: /Users/amansingh/Downloads/nyc-waittime-cancellation/data/processed/master.parquet
+2026-02-25 03:55:02,996 [INFO] ✓ Join completed in 176.7s
+2026-02-25 03:55:22,159 [INFO] 
+============================================================
+2026-02-25 03:55:22,160 [INFO] STEP: OLS Baseline
+2026-02-25 03:55:22,160 [INFO] ============================================================
+2026-02-25 03:55:54,958 [INFO] Running naive OLS (no controls)...
+2026-02-25 03:56:35,704 [INFO] Naive OLS: β=0.0363, SE=0.0000, p=0.0000
+2026-02-25 03:56:37,091 [INFO] Running OLS with controls...
+2026-02-25 04:01:47,656 [INFO] Running pipeline | step=baseline | months=[('2023', '06')] | sample=True
+2026-02-25 04:01:49,073 [INFO] 
+============================================================
+2026-02-25 04:01:49,073 [INFO] STEP: OLS Baseline
+2026-02-25 04:01:49,073 [INFO] ============================================================
+2026-02-25 04:02:22,017 [INFO] Running naive OLS (no controls)...
+2026-02-25 04:02:59,334 [INFO] Naive OLS: β=0.0363, SE=0.0000, p=0.0000
+2026-02-25 04:03:00,224 [INFO] Running OLS with controls (within-group demeaning)...
+2026-02-25 04:06:00,824 [INFO] Running pipeline | step=baseline | months=[('2023', '06')] | sample=True
+2026-02-25 04:06:02,228 [INFO] 
+============================================================
+2026-02-25 04:06:02,228 [INFO] STEP: OLS Baseline
+2026-02-25 04:06:02,228 [INFO] ============================================================
+2026-02-25 04:06:36,147 [INFO] Running naive OLS (no controls)...
+2026-02-25 04:07:12,126 [INFO] Naive OLS: β=0.0363, SE=0.0000, p=0.0000
+2026-02-25 04:07:13,333 [INFO] Running OLS with controls (within-group demeaning)...
+2026-02-25 04:10:56,889 [INFO] Running pipeline | step=baseline | months=[('2023', '06')] | sample=True
+2026-02-25 04:10:58,285 [INFO] 
+============================================================
+2026-02-25 04:10:58,285 [INFO] STEP: OLS Baseline
+2026-02-25 04:10:58,285 [INFO] ============================================================
+2026-02-25 04:11:27,042 [INFO] Sampling 200,000 rows from 54,697,055 for OLS baseline
+2026-02-25 04:12:13,330 [INFO] Running naive OLS...
+2026-02-25 04:12:13,693 [INFO] Naive OLS: β=0.0367, SE=0.0004, p=0.0000
+2026-02-25 04:12:59,606 [INFO] Sampling 200,000 rows from 54,697,055 for OLS baseline
+2026-02-25 04:13:47,682 [INFO] Running OLS with controls...
+2026-02-25 04:13:48,044 [INFO] OLS w/ controls: β=0.0374, SE=0.0004, p=0.0000
+2026-02-25 04:13:48,085 [INFO] 
+            model      coef        se  pval
+0       Naive OLS  0.036741  0.000393   0.0
+1  OLS + Controls  0.037395  0.000402   0.0
+2026-02-25 04:13:48,130 [INFO] Saved: /Users/amansingh/Downloads/nyc-waittime-cancellation/outputs/tables/ols_baseline.csv
+2026-02-25 04:13:52,312 [INFO] ✓ OLS Baseline completed in 174.0s
+2026-02-25 04:13:52,313 [INFO] 
+============================================================
+2026-02-25 04:13:52,313 [INFO] PIPELINE COMPLETE
+2026-02-25 04:13:52,313 [INFO] ============================================================
+2026-02-25 04:13:52,313 [INFO] Results in: outputs/figures/ and outputs/tables/
+2026-02-25 04:13:52,313 [INFO] Launch dashboard: streamlit run app/streamlit_app.py
+2026-02-25 04:19:18,426 [INFO] Running pipeline | step=baseline | months=[('2023', '06')] | sample=True
+2026-02-25 04:19:20,054 [INFO] 
+============================================================
+2026-02-25 04:19:20,055 [INFO] STEP: OLS Baseline
+2026-02-25 04:19:20,055 [INFO] ============================================================
+2026-02-25 04:19:48,594 [INFO] Sampling 200,000 rows from 54,697,055 for OLS baseline
+2026-02-25 04:20:19,426 [INFO] Running naive OLS...
+2026-02-25 04:20:19,712 [INFO] Naive OLS: β=0.0367, SE=0.0004, p=0.0000
+2026-02-25 04:20:51,211 [INFO] Sampling 200,000 rows from 54,697,055 for OLS baseline
+2026-02-25 04:21:31,319 [INFO] Running OLS with controls...
+2026-02-25 04:21:31,682 [INFO] OLS w/ controls: β=0.0374, SE=0.0004, p=0.0000
+2026-02-25 04:21:31,730 [INFO] 
+            model      coef        se  pval
+0       Naive OLS  0.036741  0.000393   0.0
+1  OLS + Controls  0.037395  0.000402   0.0
+2026-02-25 04:21:31,765 [INFO] Saved: /Users/amansingh/Downloads/nyc-waittime-cancellation/outputs/tables/ols_baseline.csv
+2026-02-25 04:21:32,989 [INFO] ✓ OLS Baseline completed in 132.9s
+2026-02-25 04:21:32,989 [INFO] 
+============================================================
+2026-02-25 04:21:32,989 [INFO] PIPELINE COMPLETE
+2026-02-25 04:21:32,989 [INFO] ============================================================
+2026-02-25 04:21:32,989 [INFO] Results in: outputs/figures/ and outputs/tables/
+2026-02-25 04:21:32,989 [INFO] Launch dashboard: streamlit run app/streamlit_app.py
+2026-02-25 04:21:40,840 [INFO] Running pipeline | step=iv | months=[('2023', '06')] | sample=True
+2026-02-25 04:21:57,031 [INFO] Running pipeline | step=iv | months=[('2023', '06')] | sample=True
+2026-02-25 04:21:58,486 [INFO] 
+============================================================
+2026-02-25 04:21:58,486 [INFO] STEP: IV 2SLS
+2026-02-25 04:21:58,486 [INFO] ============================================================
+2026-02-25 04:22:24,923 [INFO] Running IV analysis on 54,697,055 observations...
+2026-02-25 04:22:24,929 [INFO] ── First Stage ──
