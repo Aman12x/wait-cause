@@ -115,8 +115,3 @@ python pipeline.py --step plots      # Regenerate figures only
 
 ---
 
-## Resume Bullets
-
-> Built an IV (2SLS) model using weather as an instrument to causally estimate the effect of wait time on ride cancellations in NYC, correcting for 35% downward bias in naive OLS
-
-> Used causal forests on NYC TLC data to find outer-borough riders are 2x more cancellation-sensitive to wait time, informing targeted driver incentive strategy during adverse weather
