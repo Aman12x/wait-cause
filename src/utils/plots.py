@@ -148,7 +148,7 @@ def plot_hte_by_borough(borough_hte: pd.DataFrame, save: bool = True):
     for i, (_, row) in enumerate(borough_hte.iterrows()):
         ax.text(
             row["mean_cate"] + 0.001, i,
-            f"+{row['mean_cate']:.3f}  (n={row['n']:,})",
+            f"{row['mean_cate']:+.3f}  (n={row['n']:,})",
             va="center", fontsize=9
         )
 

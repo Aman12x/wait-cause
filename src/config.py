@@ -3,11 +3,6 @@ Project-wide configuration and constants.
 All thresholds, paths, and parameters live here — never hardcode in scripts.
 """
 
-"""
-Project-wide configuration and constants.
-All thresholds, paths, and parameters live here — never hardcode in scripts.
-"""
-
 from pathlib import Path
 
 # ── Paths ──────────────────────────────────────────────────────────────────

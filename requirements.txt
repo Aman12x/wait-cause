@@ -5,10 +5,12 @@ geopandas
 shapely
 requests
 statsmodels
+linearmodels
 econml
 scikit-learn
 folium
 streamlit
+streamlit-folium
 matplotlib
 seaborn
 numpy

@@ -125,7 +125,7 @@ with tab1:
 
     fig_path = OUTPUTS_FIGURES / "ols_vs_iv_coef.png"
     if fig_path.exists():
-        st.image(str(fig_path), use_column_width=True)
+        st.image(str(fig_path), use_container_width=True)
     else:
         # Generate inline if image not saved yet
         if results["ols"] is not None and results["iv"] is not None:
@@ -168,7 +168,7 @@ with tab2:
 
     fig_path = OUTPUTS_FIGURES / "first_stage.png"
     if fig_path.exists():
-        st.image(str(fig_path), use_column_width=True)
+        st.image(str(fig_path), use_container_width=True)
     else:
         if results["master"] is not None:
             df = results["master"].sample(min(50000, len(results["master"])))
@@ -199,7 +199,7 @@ with tab3:
 
     fig_path = OUTPUTS_FIGURES / "hte_by_borough.png"
     if fig_path.exists():
-        st.image(str(fig_path), use_column_width=True)
+        st.image(str(fig_path), use_container_width=True)
     else:
         if results["borough_hte"] is not None:
             df = results["borough_hte"].sort_values("mean_cate", ascending=True)
