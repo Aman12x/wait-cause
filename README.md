@@ -11,7 +11,7 @@ Naive OLS is biased — high-demand periods have both longer waits *and* more co
 | Model | Effect of +1 min wait | Notes |
 |---|---|---|
 | Naive OLS | ~0.012 | Downward biased |
-| OLS + Controls | ~0.018 | Better, still biased |
+| OLS + Controls | ~0.018 | Better, Still biased |
 | **IV 2SLS (LATE)** | **~0.040** | Causal estimate for rain compliers |
 
 - **First stage F-stat:** ~18 (strong instrument ✓)
