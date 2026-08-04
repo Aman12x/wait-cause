@@ -235,6 +235,11 @@ def run_iv_analysis(df: pd.DataFrame = None, save: bool = True) -> dict:
             raise FileNotFoundError("master.parquet not found. Run join.py first.")
         df = pd.read_parquet(master_path)
 
+    SAMPLE_N = 200_000  # match OLS baseline sampling for tractable estimation
+    if len(df) > SAMPLE_N:
+        logger.info(f"Sampling {SAMPLE_N:,} rows from {len(df):,} for IV analysis")
+        df = df.sample(SAMPLE_N, random_state=42)
+
     logger.info(f"Running IV analysis on {len(df):,} observations...")
 
     first_stage = run_first_stage(df)

@@ -221,3 +221,191 @@
 2026-02-25 04:21:58,486 [INFO] ============================================================
 2026-02-25 04:22:24,923 [INFO] Running IV analysis on 54,697,055 observations...
 2026-02-25 04:22:24,929 [INFO] ── First Stage ──
+2026-08-03 20:08:04,421 [INFO] Running pipeline | step=download | months=[('2023', '06'), ('2023', '07'), ('2023', '08')] | sample=False
+2026-08-03 20:08:04,573 [INFO] 
+============================================================
+2026-08-03 20:08:04,573 [INFO] STEP: Download
+2026-08-03 20:08:04,573 [INFO] ============================================================
+2026-08-03 20:08:04,625 [INFO] Running pipeline | step=clean | months=[('2023', '06'), ('2023', '07'), ('2023', '08')] | sample=False
+2026-08-03 20:08:05,338 [INFO] 
+============================================================
+2026-08-03 20:08:05,338 [INFO] STEP: Clean
+2026-08-03 20:08:05,338 [INFO] ============================================================
+2026-08-03 22:11:36,316 [INFO] Running pipeline | step=clean | months=[('2023', '06'), ('2023', '07'), ('2023', '08')] | sample=False
+2026-08-03 22:11:37,094 [INFO] 
+============================================================
+2026-08-03 22:11:37,094 [INFO] STEP: Clean
+2026-08-03 22:11:37,094 [INFO] ============================================================
+2026-08-03 22:11:37,095 [INFO] Loading 3 parquet file(s) via DuckDB...
+2026-08-03 22:13:42,241 [INFO] Loaded 56,820,900 raw rows
+2026-08-03 22:22:41,653 [INFO] Starting rows: 56,820,900
+2026-08-03 22:22:50,473 [INFO] After removing null wait_time: 56,820,900 (0 dropped)
+2026-08-03 22:24:56,002 [INFO] After wait_time bounds [0.5, 30.0]: 54,756,440
+2026-08-03 22:26:29,362 [INFO] After zone filter: 54,753,928
+2026-08-03 22:28:48,716 [INFO] After surge proxy filter: 54,697,055
+2026-08-03 22:28:48,793 [INFO] Final rows: 54,697,055 (96.3% of original)
+2026-08-03 22:28:52,405 [INFO] Running validation assertions...
+2026-08-03 22:30:15,126 [WARNING] High null rate columns: {'on_scene_datetime': 0.2896190846106797}
+2026-08-03 22:30:15,128 [INFO] Validation passed. Cancellation rate: 0.290
+2026-08-03 22:30:32,660 [INFO] Saved cleaned trips: /private/tmp/claude-501/-Users-amansingh/666c8c68-73d9-4870-a941-89d2b3a64a74/scratchpad/wait-cause/data/processed/trips_clean.parquet
+2026-08-03 22:30:32,665 [INFO] ✓ Clean completed in 1135.6s
+2026-08-03 22:30:32,666 [INFO] 
+============================================================
+2026-08-03 22:30:32,666 [INFO] PIPELINE COMPLETE
+2026-08-03 22:30:32,666 [INFO] ============================================================
+2026-08-03 22:30:32,666 [INFO] Results in: outputs/figures/ and outputs/tables/
+2026-08-03 22:30:32,666 [INFO] Launch dashboard: streamlit run app/streamlit_app.py
+2026-08-03 22:30:34,143 [INFO] Running pipeline | step=join | months=[('2023', '06'), ('2023', '07'), ('2023', '08')] | sample=False
+2026-08-03 22:30:34,777 [INFO] 
+============================================================
+2026-08-03 22:30:34,777 [INFO] STEP: Join
+2026-08-03 22:30:34,777 [INFO] ============================================================
+2026-08-03 22:30:39,311 [INFO] Loaded weather: 6,618 hourly records across 3 stations
+2026-08-03 22:30:39,558 [INFO] Loaded zone lookup: 265 zones
+2026-08-03 22:30:39,559 [INFO] Building master join from 54,697,055 trips...
+2026-08-03 22:30:45,444 [INFO] After zone join: 54,697,055 rows (null borough: 0)
+2026-08-03 22:31:00,401 [INFO] After weather join: 54,697,055 rows
+2026-08-03 22:31:46,519 [INFO] Rain null rate: 0.001 ✓
+2026-08-03 22:31:49,573 [INFO] Master dataset: 54,697,055 rows, 21 columns
+2026-08-03 22:31:50,631 [INFO] Cancellation rate: 0.290
+2026-08-03 22:31:50,766 [INFO] Rain rate: 0.098
+2026-08-03 22:32:28,219 [INFO] Saved master dataset: /private/tmp/claude-501/-Users-amansingh/666c8c68-73d9-4870-a941-89d2b3a64a74/scratchpad/wait-cause/data/processed/master.parquet
+2026-08-03 22:32:28,276 [INFO] ✓ Join completed in 113.5s
+2026-08-03 22:32:28,280 [INFO] 
+============================================================
+2026-08-03 22:32:28,280 [INFO] PIPELINE COMPLETE
+2026-08-03 22:32:28,280 [INFO] ============================================================
+2026-08-03 22:32:28,280 [INFO] Results in: outputs/figures/ and outputs/tables/
+2026-08-03 22:32:28,280 [INFO] Launch dashboard: streamlit run app/streamlit_app.py
+2026-08-03 22:32:30,250 [INFO] Running pipeline | step=baseline | months=[('2023', '06'), ('2023', '07'), ('2023', '08')] | sample=False
+2026-08-03 22:32:33,039 [INFO] 
+============================================================
+2026-08-03 22:32:33,046 [INFO] STEP: OLS Baseline
+2026-08-03 22:32:33,046 [INFO] ============================================================
+2026-08-03 22:32:55,820 [INFO] Sampling 200,000 rows from 54,697,055 for OLS baseline
+2026-08-03 22:33:47,206 [INFO] Running naive OLS...
+2026-08-03 22:33:48,686 [INFO] Naive OLS: β=0.0367, SE=0.0004, p=0.0000
+2026-08-03 22:33:53,346 [INFO] Sampling 200,000 rows from 54,697,055 for OLS baseline
+2026-08-03 22:34:38,310 [INFO] Running OLS with controls...
+2026-08-03 22:34:39,080 [INFO] OLS w/ controls: β=0.0374, SE=0.0004, p=0.0000
+2026-08-03 22:34:39,130 [INFO] 
+            model      coef        se  pval
+0       Naive OLS  0.036741  0.000393   0.0
+1  OLS + Controls  0.037395  0.000402   0.0
+2026-08-03 22:34:39,160 [INFO] Saved: /private/tmp/claude-501/-Users-amansingh/666c8c68-73d9-4870-a941-89d2b3a64a74/scratchpad/wait-cause/outputs/tables/ols_baseline.csv
+2026-08-03 22:34:40,566 [INFO] ✓ OLS Baseline completed in 127.5s
+2026-08-03 22:34:40,566 [INFO] 
+============================================================
+2026-08-03 22:34:40,566 [INFO] PIPELINE COMPLETE
+2026-08-03 22:34:40,566 [INFO] ============================================================
+2026-08-03 22:34:40,566 [INFO] Results in: outputs/figures/ and outputs/tables/
+2026-08-03 22:34:40,566 [INFO] Launch dashboard: streamlit run app/streamlit_app.py
+2026-08-03 22:34:41,627 [INFO] Running pipeline | step=iv | months=[('2023', '06'), ('2023', '07'), ('2023', '08')] | sample=False
+2026-08-03 22:34:43,439 [INFO] 
+============================================================
+2026-08-03 22:34:43,439 [INFO] STEP: IV 2SLS
+2026-08-03 22:34:43,448 [INFO] ============================================================
+2026-08-03 22:35:06,890 [INFO] Sampling 200,000 rows from 54,697,055 for IV analysis
+2026-08-03 22:35:42,071 [INFO] Running IV analysis on 200,000 observations...
+2026-08-03 22:35:42,078 [INFO] ── First Stage ──
+2026-08-03 22:35:43,592 [INFO] First stage: rain → wait_time coef = 0.0871
+2026-08-03 22:35:43,592 [INFO] First stage F-stat (excluded instrument): 83.95
+2026-08-03 22:35:43,592 [INFO] Instrument relevance confirmed: F=83.95 ✓
+2026-08-03 22:35:44,105 [INFO] ── Reduced Form ──
+2026-08-03 22:35:45,240 [INFO] Reduced form: rain → cancel coef = 0.00071, p=0.6124
+2026-08-03 22:35:45,240 [INFO] Wald LATE estimate: 0.00811
+2026-08-03 22:35:45,240 [INFO]   = 0.00071 (reduced form) / 0.0871 (first stage)
+2026-08-03 22:35:45,240 [INFO] ── 2SLS (linearmodels) ──
+2026-08-03 22:35:51,821 [INFO] 2SLS LATE: β=0.00590, SE=0.01417, p=0.6771
+2026-08-03 22:35:51,821 [INFO] 95% CI: [-0.02187, 0.03367]
+2026-08-03 22:35:51,821 [INFO] ── Hausman Endogeneity Test ──
+2026-08-03 22:35:52,917 [INFO] Hausman test: v_hat coef=0.03097, p=0.0272 → ENDOGENOUS ✓ (IV justified)
+2026-08-03 22:35:52,918 [INFO] ── Placebo Instrument Test ──
+2026-08-03 22:35:54,264 [INFO] Placebo test (next-day rain): coef=0.00142, p=0.3126 → PASSED ✓ (no future rain effect)
+2026-08-03 22:35:54,265 [INFO] 
+── IV Summary ──
+2026-08-03 22:35:54,265 [INFO]   first_stage_f: 83.94824
+2026-08-03 22:35:54,265 [INFO]   first_stage_coef_rain: 0.08713
+2026-08-03 22:35:54,265 [INFO]   reduced_form_coef: 0.00071
+2026-08-03 22:35:54,265 [INFO]   wald_late: 0.00811
+2026-08-03 22:35:54,266 [INFO]   iv_2sls_coef: 0.00590
+2026-08-03 22:35:54,266 [INFO]   iv_2sls_se: 0.01417
+2026-08-03 22:35:54,266 [INFO]   iv_2sls_pval: 0.67708
+2026-08-03 22:35:54,266 [INFO]   iv_2sls_ci_low: -0.02187
+2026-08-03 22:35:54,266 [INFO]   iv_2sls_ci_high: 0.03367
+2026-08-03 22:35:54,266 [INFO]   hausman_pval: 0.02720
+2026-08-03 22:35:54,266 [INFO]   endogenous: True
+2026-08-03 22:35:54,266 [INFO]   placebo_passed: True
+2026-08-03 22:35:54,266 [INFO]   n: 200000
+2026-08-03 22:35:54,272 [INFO] Saved IV results: /private/tmp/claude-501/-Users-amansingh/666c8c68-73d9-4870-a941-89d2b3a64a74/scratchpad/wait-cause/outputs/tables/iv_results.csv
+2026-08-03 22:35:54,272 [INFO] ✓ IV 2SLS completed in 70.8s
+2026-08-03 22:35:54,272 [INFO] 
+============================================================
+2026-08-03 22:35:54,272 [INFO] PIPELINE COMPLETE
+2026-08-03 22:35:54,272 [INFO] ============================================================
+2026-08-03 22:35:54,272 [INFO] Results in: outputs/figures/ and outputs/tables/
+2026-08-03 22:35:54,272 [INFO] Launch dashboard: streamlit run app/streamlit_app.py
+2026-08-03 22:35:54,639 [INFO] Running pipeline | step=hte | months=[('2023', '06'), ('2023', '07'), ('2023', '08')] | sample=False
+2026-08-03 22:35:59,877 [INFO] 
+============================================================
+2026-08-03 22:35:59,877 [INFO] STEP: Causal Forest HTE
+2026-08-03 22:35:59,877 [INFO] ============================================================
+2026-08-03 22:36:24,246 [INFO] Fitting causal forest on 54,697,055 observations...
+2026-08-03 22:36:53,275 [INFO] Sampling 200,000 rows from 54,697,055 for causal forest
+2026-08-03 22:37:43,898 [INFO] Fitting model (this may take a few minutes)...
+2026-08-03 22:40:05,998 [INFO] Causal forest fitted ✓
+2026-08-03 22:40:11,501 [INFO] Mean CATE: 0.03930
+2026-08-03 22:40:11,502 [INFO] CATE std: 0.00863
+2026-08-03 22:40:11,502 [INFO] CATE range: [0.00773, 0.06575]
+2026-08-03 22:40:11,893 [INFO] 
+HTE by Borough:
+         borough  mean_cate  std_cate      n
+0          Bronx   0.041368  0.006749   4839
+1       Brooklyn   0.039849  0.007751  10515
+3         Queens   0.039192  0.009581   8384
+2      Manhattan   0.038386  0.009057  15708
+4  Staten Island   0.038158  0.007576    554
+2026-08-03 22:40:11,916 [INFO] 
+HTE by Hour Bucket:
+         hour_bucket  mean_cate  std_cate      n
+0   Late Night (0-6)   0.035052  0.009028   5398
+1     Morning (6-12)   0.043012  0.007180   9556
+2  Afternoon (12-18)   0.041212  0.006734  11879
+3    Evening (18-24)   0.036613  0.009309  13167
+2026-08-03 22:40:11,983 [INFO] 
+Feature Importance (heterogeneity drivers):
+             feature  importance
+1        hour_of_day    0.542365
+0        surge_proxy    0.353399
+4       borough_code    0.048555
+6      wind_speed_ms    0.021215
+2         is_weekend    0.019228
+5  rain_intensity_mm    0.015238
+3         is_holiday    0.000000
+2026-08-03 22:40:13,232 [INFO] 
+Average Treatment Effect (causal forest ATE): 0.03930
+2026-08-03 22:40:13,309 [INFO] Saved HTE tables.
+2026-08-03 22:40:13,309 [INFO] ✓ Causal Forest HTE completed in 253.4s
+2026-08-03 22:40:13,310 [INFO] 
+============================================================
+2026-08-03 22:40:13,310 [INFO] PIPELINE COMPLETE
+2026-08-03 22:40:13,310 [INFO] ============================================================
+2026-08-03 22:40:13,310 [INFO] Results in: outputs/figures/ and outputs/tables/
+2026-08-03 22:40:13,310 [INFO] Launch dashboard: streamlit run app/streamlit_app.py
+2026-08-03 22:40:16,662 [INFO] Running pipeline | step=plots | months=[('2023', '06'), ('2023', '07'), ('2023', '08')] | sample=False
+2026-08-03 22:40:21,273 [INFO] 
+============================================================
+2026-08-03 22:40:21,273 [INFO] STEP: Generate Plots
+2026-08-03 22:40:21,273 [INFO] ============================================================
+2026-08-03 22:40:39,843 [INFO] Saved: /private/tmp/claude-501/-Users-amansingh/666c8c68-73d9-4870-a941-89d2b3a64a74/scratchpad/wait-cause/outputs/figures/ols_vs_iv_coef.png
+2026-08-03 22:43:26,839 [INFO] Saved: /private/tmp/claude-501/-Users-amansingh/666c8c68-73d9-4870-a941-89d2b3a64a74/scratchpad/wait-cause/outputs/figures/first_stage.png
+2026-08-03 22:43:30,961 [INFO] Saved: /private/tmp/claude-501/-Users-amansingh/666c8c68-73d9-4870-a941-89d2b3a64a74/scratchpad/wait-cause/outputs/figures/hte_by_borough.png
+2026-08-03 22:43:31,219 [INFO] Saved: /private/tmp/claude-501/-Users-amansingh/666c8c68-73d9-4870-a941-89d2b3a64a74/scratchpad/wait-cause/outputs/figures/cate_distribution.png
+2026-08-03 22:43:31,219 [INFO] Generated 4 figures.
+2026-08-03 22:43:32,942 [INFO] ✓ Generate Plots completed in 191.7s
+2026-08-03 22:43:32,943 [INFO] 
+============================================================
+2026-08-03 22:43:32,943 [INFO] PIPELINE COMPLETE
+2026-08-03 22:43:32,943 [INFO] ============================================================
+2026-08-03 22:43:32,943 [INFO] Results in: outputs/figures/ and outputs/tables/
+2026-08-03 22:43:32,943 [INFO] Launch dashboard: streamlit run app/streamlit_app.py

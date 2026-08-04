@@ -32,6 +32,11 @@ def prepare_cf_data(df: pd.DataFrame) -> tuple:
         "surge_proxy", "hour_of_day", "is_weekend", "borough"
     ]).copy()
 
+    SAMPLE_N = 200_000  # match OLS/IV sampling for tractable forest fitting
+    if len(df) > SAMPLE_N:
+        logger.info(f"Sampling {SAMPLE_N:,} rows from {len(df):,} for causal forest")
+        df = df.sample(SAMPLE_N, random_state=42)
+
     # Encode borough
     le = LabelEncoder()
     df["borough_code"] = le.fit_transform(df["borough"].fillna("Unknown"))

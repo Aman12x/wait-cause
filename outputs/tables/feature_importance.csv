@@ -1,0 +1,8 @@
+feature,importance
+hour_of_day,0.5423650282295178
+surge_proxy,0.35339877716334006
+borough_code,0.0485550197163435
+wind_speed_ms,0.021214582130731928
+is_weekend,0.01922848710425347
+rain_intensity_mm,0.015238105655813277
+is_holiday,0.0

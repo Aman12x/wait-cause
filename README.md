@@ -2,7 +2,7 @@
 
 > **What is the causal effect of a 1-minute increase in wait time on rider cancellation probability?**
 
-Naive OLS is biased — high-demand periods have both longer waits *and* more committed riders, causing downward bias. This project uses **hourly rainfall as an instrumental variable** to isolate exogenous variation in wait time and estimate a credible LATE. Heterogeneous treatment effects via Causal Forest reveal that outer-borough riders are ~2x more sensitive than Manhattan riders.
+Naive OLS is confounded — high-demand periods produce both longer waits *and* more cancellations, inflating the association. This project uses **hourly rainfall as an instrumental variable** (real NOAA station data) to isolate exogenous variation in wait time. The result is a textbook confounding story: the naive +3.7pp-per-minute association shrinks to a statistically-zero causal LATE once instrumented, with a strong first stage (F = 83.9) and a Hausman test confirming that OLS and IV differ significantly.
 
 ---
 
@@ -10,15 +10,17 @@ Naive OLS is biased — high-demand periods have both longer waits *and* more co
 
 | Model | Effect of +1 min wait | Notes |
 |---|---|---|
-| Naive OLS | ~0.012 | Downward biased |
-| OLS + Controls | ~0.018 | Better, Still biased |
-| **IV 2SLS (LATE)** | **~0.040** | Causal estimate for rain compliers |
+| Naive OLS | +0.0367 (SE 0.0004) | Confounded upward by demand conditions |
+| OLS + Controls | +0.0374 (SE 0.0004) | Controls barely move it |
+| **IV 2SLS (LATE)** | **+0.0059 (p = 0.68, 95% CI −0.022 to +0.034)** | Causal estimate for rain compliers — indistinguishable from zero |
 
-- **First stage F-stat:** ~18 (strong instrument ✓)
-- **Hausman test:** Endogeneity confirmed → IV justified
-- **Outer borough CATE:** ~0.055 vs Manhattan ~0.028
+- **First stage F-stat:** 83.9 (strong instrument — rain robustly shifts wait times)
+- **Hausman test:** p = 0.027 → OLS and IV differ significantly, endogeneity confirmed
+- **Placebo instrument test:** passed
+- **Causal forest (DML) heterogeneity:** mean CATE 0.038–0.041 across boroughs (Bronx highest, Staten Island lowest) and 0.035–0.043 by time of day — a flat gradient. Note these DML estimates do not use the instrument, so they inherit OLS-style confounding and sit near the OLS coefficient, consistent with the IV finding.
+- Estimated on a 200,000-row random sample (seed 42) of 54,697,055 cleaned trips, June–August 2023, with real hourly weather from three NOAA stations (JFK, LGA, Central Park).
 
-**Business insight:** A 2-minute wait time reduction in outer boroughs during rain events would reduce cancellations by ~8%, recoverable through targeted driver incentives.
+**Business insight:** the +3.7pp-per-minute correlation overstates the causal effect roughly 6-fold. Investment in wait-time reduction justified by the raw correlation with cancellations would likely be misallocated — the association is driven mostly by demand conditions, not by wait time itself. This is precisely the decision error the IV design exists to catch.
 
 ---
 
@@ -54,10 +56,10 @@ nyc-waittime-cancellation/
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 
-# 2. (Optional) Set NOAA API token for real weather data
-# Get free token at: https://www.ncdc.noaa.gov/cdo-web/token
-echo "NOAA_API_TOKEN=your_token_here" > .env
-# Without token, synthetic weather is generated automatically
+# 2. Weather data: fetched automatically from NOAA's token-free NCEI LCD service
+# (the legacy CDO v2 API returns 500s on hourly-precipitation queries and is kept
+# only as an optional path via NOAA_API_TOKEN; synthetic weather is a last resort
+# for offline development and is clearly logged when used)
 
 # 3. Run full pipeline (sample mode — 1 month, fast)
 python pipeline.py --sample

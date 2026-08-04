@@ -98,6 +98,71 @@ def download_tlc_zone_shapefile() -> Path:
 
 # ── NOAA ───────────────────────────────────────────────────────────────────
 
+
+def _fetch_lcd_station(year: str, month: str, station_name: str):
+    """
+    Fetch real hourly weather from NOAA NCEI's token-free LCD service.
+    Fallback for the CDO v2 API, which has become unreliable (500s) for
+    hourly-precipitation queries. Returns the written Path, or None on failure.
+    """
+    import calendar
+    from io import StringIO
+    import pandas as pd
+
+    lcd_ids = {  # NCEI LCD station ids (USAF+WBAN) for the config stations
+        "JFK": "74486094789",
+        "LGA": "72503014732",
+        "CENTRAL_PARK": "72505394728",
+    }
+    last_day = calendar.monthrange(int(year), int(month))[1]
+    try:
+        r = requests.get(
+            "https://www.ncei.noaa.gov/access/services/data/v1",
+            params={
+                "dataset": "local-climatological-data",
+                "stations": lcd_ids[station_name],
+                "startDate": f"{year}-{month}-01",
+                "endDate": f"{year}-{month}-{last_day:02d}",
+                "format": "csv",
+            },
+            timeout=120,
+        )
+        if r.status_code != 200:
+            logger.warning(f"NCEI LCD returned {r.status_code} for {station_name}")
+            return None
+        df = pd.read_csv(
+            StringIO(r.text), low_memory=False,
+            usecols=["DATE", "REPORT_TYPE", "HourlyPrecipitation",
+                     "HourlyWindSpeed", "HourlyVisibility"],
+        )
+        df = df[df["REPORT_TYPE"].str.strip().isin(["FM-15", "FM-16"])]
+        if df.empty:
+            logger.warning(f"NCEI LCD returned no hourly obs for {station_name}")
+            return None
+        ts = pd.to_datetime(df["DATE"]).dt.floor("h")
+        precip = (df["HourlyPrecipitation"].astype(str)
+                  .str.replace("s", "", regex=False)
+                  .replace({"T": "0.005", "": None, "nan": None}))
+        hourly = (pd.DataFrame({
+                      "datetime": ts,
+                      "rain_intensity_mm": pd.to_numeric(precip, errors="coerce") * 25.4,
+                      "wind_speed_ms": pd.to_numeric(df["HourlyWindSpeed"], errors="coerce") * 0.44704,
+                      "visibility_km": pd.to_numeric(
+                          df["HourlyVisibility"].astype(str).str.rstrip("Vs"),
+                          errors="coerce") * 1.609344,
+                  })
+                  .groupby("datetime", as_index=False).mean())
+        hourly["rain_intensity_mm"] = hourly["rain_intensity_mm"].fillna(0.0)
+        hourly.insert(1, "station", station_name)
+        dest = NOAA_DIR / f"noaa_{station_name.lower()}_{year}_{month}.csv"
+        hourly.to_csv(dest, index=False)
+        logger.info(f"Fetched real LCD weather: {dest} ({len(hourly)} hourly records)")
+        return dest
+    except Exception as e:
+        logger.warning(f"NCEI LCD fetch failed for {station_name}: {e}")
+        return None
+
+
 def download_noaa_weather(year: str, month: str, force: bool = False) -> dict[str, Path]:
     """
     Download hourly weather from NOAA CDO API for all 3 stations.
@@ -105,11 +170,20 @@ def download_noaa_weather(year: str, month: str, force: bool = False) -> dict[st
     """
     token = os.getenv(NOAA_TOKEN_ENV)
     if not token:
-        logger.warning(
-            f"No NOAA token found in env var '{NOAA_TOKEN_ENV}'. "
-            "Generating synthetic weather data for development instead."
+        logger.info(
+            f"No NOAA token in '{NOAA_TOKEN_ENV}'; using token-free NCEI LCD service."
         )
-        return _generate_synthetic_weather(year, month)
+        paths = {}
+        for station_name in NOAA_STATIONS:
+            filename = f"noaa_{station_name.lower()}_{year}_{month}.csv"
+            dest = NOAA_DIR / filename
+            if dest.exists() and not force:
+                logger.info(f"Already exists: {filename}")
+                paths[station_name] = dest
+                continue
+            lcd = _fetch_lcd_station(year, month, station_name)
+            paths[station_name] = lcd if lcd else _generate_synthetic_weather_station(year, month, station_name)
+        return paths
 
     paths = {}
     start = f"{year}-{month}-01"
@@ -142,8 +216,9 @@ def download_noaa_weather(year: str, month: str, force: bool = False) -> dict[st
 
         r = requests.get(url, params=params, headers=headers, timeout=60)
         if r.status_code != 200:
-            logger.warning(f"NOAA API returned {r.status_code} for {station_name}, using synthetic.")
-            paths[station_name] = _generate_synthetic_weather_station(year, month, station_name)
+            logger.warning(f"NOAA CDO API returned {r.status_code} for {station_name}, trying NCEI LCD.")
+            lcd = _fetch_lcd_station(year, month, station_name)
+            paths[station_name] = lcd if lcd else _generate_synthetic_weather_station(year, month, station_name)
             continue
 
         dest.write_text(r.text)
