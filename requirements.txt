@@ -18,3 +18,5 @@ pyarrow
 tqdm
 python-dotenv
 pytest
+networkx
+scipy

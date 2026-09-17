@@ -1,0 +1,11 @@
+dag,x,y,given,max_abs_partial_corr,pval,threshold,holds
+assumed,is_holiday,rain_intensity_mm,"borough, hour_of_day",0.01181358255654466,1.2684545856309e-07,0.02,True
+assumed,is_holiday,wind_speed_ms,"borough, hour_of_day",0.0719076947741541,1.7887020191681102e-227,0.02,False
+assumed,is_weekend,rain_intensity_mm,"borough, hour_of_day",0.019110326396451507,1.2619270640718615e-17,0.02,True
+assumed,is_weekend,wind_speed_ms,"borough, hour_of_day",0.001966619636432156,0.37913327241967587,0.02,True
+rain_demand,is_holiday,wind_speed_ms,"borough, hour_of_day, rain_intensity_mm",0.07178606859831636,1.0380436226854899e-226,0.02,False
+rain_demand,is_weekend,wind_speed_ms,"borough, hour_of_day, rain_intensity_mm",0.0021791497402682217,0.3297882618117679,0.02,True
+price_channel,is_holiday,rain_intensity_mm,"borough, hour_of_day",0.01181358255654466,1.2684545856309e-07,0.02,True
+price_channel,is_holiday,wind_speed_ms,"borough, hour_of_day",0.0719076947741541,1.7887020191681102e-227,0.02,False
+price_channel,is_weekend,rain_intensity_mm,"borough, hour_of_day",0.019110326396451507,1.2619270640718615e-17,0.02,True
+price_channel,is_weekend,wind_speed_ms,"borough, hour_of_day",0.001966619636432156,0.37913327241967587,0.02,True

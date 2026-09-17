@@ -1,0 +1,19 @@
+dag,control_set,observed_backdoor_sets,instrument,controls,controls_not_descendants_of_outcome,exclusion_holds,relevance_holds,valid,violating_path
+assumed,published,0,rain_intensity_mm,"surge_proxy, is_weekend, is_holiday, hour_of_day, borough",True,False,True,False,rain_intensity_mm - driver_supply - surge_proxy - rider_demand - cancelled
+assumed,published,0,wind_speed_ms,"surge_proxy, is_weekend, is_holiday, hour_of_day, borough",True,False,True,False,wind_speed_ms - driver_supply - surge_proxy - rider_demand - cancelled
+assumed,calendar_only,0,rain_intensity_mm,"is_weekend, is_holiday, hour_of_day, borough",True,True,True,True,
+assumed,calendar_only,0,wind_speed_ms,"is_weekend, is_holiday, hour_of_day, borough",True,True,True,True,
+assumed,none,0,rain_intensity_mm,(none),True,False,True,False,rain_intensity_mm - hour_of_day - rider_demand - borough - cancelled
+assumed,none,0,wind_speed_ms,(none),True,False,True,False,wind_speed_ms - hour_of_day - rider_demand - borough - cancelled
+rain_demand,published,0,rain_intensity_mm,"surge_proxy, is_weekend, is_holiday, hour_of_day, borough",True,False,True,False,rain_intensity_mm - driver_supply - surge_proxy - rider_demand - cancelled
+rain_demand,published,0,wind_speed_ms,"surge_proxy, is_weekend, is_holiday, hour_of_day, borough",True,False,True,False,wind_speed_ms - driver_supply - rain_intensity_mm - rider_demand - cancelled
+rain_demand,calendar_only,0,rain_intensity_mm,"is_weekend, is_holiday, hour_of_day, borough",True,False,True,False,rain_intensity_mm - rider_demand - cancelled
+rain_demand,calendar_only,0,wind_speed_ms,"is_weekend, is_holiday, hour_of_day, borough",True,False,True,False,wind_speed_ms - weather_system - rain_intensity_mm - rider_demand - cancelled
+rain_demand,none,0,rain_intensity_mm,(none),True,False,True,False,rain_intensity_mm - hour_of_day - rider_demand - borough - cancelled
+rain_demand,none,0,wind_speed_ms,(none),True,False,True,False,wind_speed_ms - hour_of_day - rain_intensity_mm - rider_demand - borough - cancelled
+price_channel,published,0,rain_intensity_mm,"surge_proxy, is_weekend, is_holiday, hour_of_day, borough",True,False,True,False,rain_intensity_mm - driver_supply - surge_proxy - rider_demand - cancelled
+price_channel,published,0,wind_speed_ms,"surge_proxy, is_weekend, is_holiday, hour_of_day, borough",True,False,True,False,wind_speed_ms - driver_supply - surge_proxy - rider_demand - cancelled
+price_channel,calendar_only,0,rain_intensity_mm,"is_weekend, is_holiday, hour_of_day, borough",True,False,True,False,rain_intensity_mm - driver_supply - surge_proxy - cancelled
+price_channel,calendar_only,0,wind_speed_ms,"is_weekend, is_holiday, hour_of_day, borough",True,False,True,False,wind_speed_ms - driver_supply - surge_proxy - cancelled
+price_channel,none,0,rain_intensity_mm,(none),True,False,True,False,rain_intensity_mm - hour_of_day - wind_speed_ms - driver_supply - surge_proxy - cancelled
+price_channel,none,0,wind_speed_ms,(none),True,False,True,False,wind_speed_ms - hour_of_day - rain_intensity_mm - driver_supply - surge_proxy - cancelled

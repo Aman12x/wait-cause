@@ -83,6 +83,18 @@ CF_MIN_SAMPLES_LEAF = 50
 CF_TEST_SIZE = 0.2
 RANDOM_STATE = 42
 
+# ── Causal DAG ─────────────────────────────────────────────────────────────
+DAG_LATENT_NODES = {"rider_demand", "driver_supply", "weather_system"}
+DAG_INSTRUMENTS = ["rain_intensity_mm", "wind_speed_ms"]
+DAG_CONTROL_SETS = {
+    "published": ["surge_proxy", "is_weekend", "is_holiday", "hour_of_day", "borough"],
+    "calendar_only": ["is_weekend", "is_holiday", "hour_of_day", "borough"],
+    "none": [],
+}
+DAG_CI_EFFECT_THRESHOLD = 0.02  # |partial corr| below this counts as independent
+DAG_MAX_CONDITIONING_SIZE = 4
+DAG_SAMPLE_N = 200_000  # match the OLS and IV sampling
+
 # ── Validation Thresholds ──────────────────────────────────────────────────
 MAX_NULL_RATE_INSTRUMENT = 0.05  # 5% max nulls on rain variable
 MIN_CANCELLATION_RATE = 0.0001  # sanity check

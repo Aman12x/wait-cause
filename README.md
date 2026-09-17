@@ -37,6 +37,7 @@ nyc-waittime-cancellation/
 │   ├── models/
 │   │   ├── ols_baseline.py     # Naive OLS + OLS with controls
 │   │   ├── iv_2sls.py          # 2SLS + full diagnostics
+│   │   ├── causal_dag.py       # Causal graph, instrument validity, testable implications
 │   │   └── causal_forest.py    # HTE via EconML CausalForestDML
 │   └── utils/
 │       ├── plots.py            # All visualizations
@@ -79,6 +80,7 @@ python pipeline.py --step join       # Join weather only
 python pipeline.py --step baseline   # OLS baselines only
 python pipeline.py --step iv         # IV analysis only
 python pipeline.py --step hte        # Causal forest only
+python pipeline.py --step dag        # Causal graph checks only
 python pipeline.py --step plots      # Regenerate figures only
 ```
 
@@ -97,6 +99,38 @@ python pipeline.py --step plots      # Regenerate figures only
 
 ---
 
+## Causal Graph
+
+The exclusion restriction above is an assumption, so `src/models/causal_dag.py` writes it down as a DAG and checks it by d-separation rather than leaving it in prose. Rider demand and driver supply are unobserved. Every row is a recorded trip request, so the graph conditions on a `trip_recorded` selection node that is a child of demand.
+
+![Causal graph](outputs/figures/causal_dag.png)
+
+**What the graph says**
+
+- **No observed backdoor set exists.** Demand confounds wait time and cancellation and is never observed, so no set of controls makes OLS causal. That is the formal reason the study needs an instrument.
+- **Rain is a valid instrument under the assumed graph only with calendar controls** (hour, weekend, holiday, borough). Hour and borough must be conditioned on because they drive both rainfall and demand.
+- **`surge_proxy` is a collider.** It is a common child of supply and demand, so conditioning on it opens `rain → driver_supply → surge_proxy ← rider_demand → cancelled`. The headline specification includes it, which the graph does not license.
+- **Two threats break the instrument under every control set:** rain raising rider demand directly, and price affecting cancellation directly. Neither can be ruled out from observed data alone.
+
+**2SLS under each control set** (same 200,000-row sample, instruments rain and wind)
+
+| Control set | Licensed by the assumed graph | Effect of +1 min wait | 95% CI | Joint first-stage F |
+|---|---|---|---|---|
+| Headline spec (calendar + surge_proxy) | No, conditions on a collider | +0.0059 (SE 0.0142) | -0.022 to +0.034 | 109.7 |
+| Calendar only | Yes | -0.0008 (SE 0.0143) | -0.029 to +0.027 | 109.8 |
+| No controls | No, hour and borough confound rain | +0.0014 (SE 0.0149) | -0.028 to +0.031 | 105.3 |
+
+The estimate the graph licenses is -0.0008, against +0.0059 in the headline specification. Both intervals cover zero and nearly coincide, so the collider does not change the conclusion, and the raw OLS association still overstates the effect. The joint F here covers both instruments, so it differs from the single-instrument 83.9 reported above.
+
+**Testable implications.** With selection on demand, the assumed graph implies 4 conditional independences among observed variables, and 3 hold at a partial-correlation threshold of 0.02 (p-values are uninformative at this sample size, so the verdict rests on effect size). The one that separates the assumed graph from the rain-raises-demand threat is rain ⟂ weekend given hour and borough: it holds at 0.019, close to the threshold, so it is weak evidence at best. The failure is holiday ⟂ wind (0.072), in a window with two federal holidays. Weather varies by station-hour over 92 days, so none of these tests has many independent weather events behind it.
+
+```bash
+python pipeline.py --step dag    # writes outputs/tables/dag_*.csv and the figure
+pytest tests/                    # graph tests need no trip data
+```
+
+---
+
 ## Data Sources
 
 | Dataset | Source | Use |
@@ -111,6 +145,7 @@ python pipeline.py --step plots      # Regenerate figures only
 
 - **2SLS:** `linearmodels.IV2SLS` with HC3 robust standard errors
 - **Causal Forest:** `econml.dml.CausalForestDML` with cross-fitting
+- **Causal graph:** `networkx` d-separation for backdoor sets, the graphical instrument criterion, and implied independences
 - **Data pipeline:** DuckDB (memory-efficient parquet queries)
 - **Visualization:** matplotlib + seaborn
 - **Dashboard:** Streamlit + Folium

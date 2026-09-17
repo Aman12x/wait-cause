@@ -42,7 +42,7 @@ def run_step(name: str, fn, *args, **kwargs):
 
 def main():
     parser = argparse.ArgumentParser(description="Run causal inference pipeline")
-    parser.add_argument("--step", choices=["download", "clean", "join", "baseline", "iv", "hte", "plots", "all"],
+    parser.add_argument("--step", choices=["download", "clean", "join", "baseline", "iv", "dag", "hte", "plots", "all"],
                         default="all", help="Which step to run")
     parser.add_argument("--sample", action="store_true",
                         help="Use 1-month sample instead of full dataset")
@@ -75,6 +75,11 @@ def main():
     if args.step in ("iv", "all"):
         from src.models.iv_2sls import run_iv_analysis
         iv_results = run_step("IV 2SLS", run_iv_analysis, save=True)
+
+    # ── Step 5b: Causal DAG (identification + testable implications) ──────
+    if args.step in ("dag", "all"):
+        from src.models.causal_dag import run_dag_analysis
+        dag_results = run_step("Causal DAG", run_dag_analysis, save=True)
 
     # ── Step 6: Causal Forest HTE ──────────────────────────────────────────
     if args.step in ("hte", "all"):
