@@ -54,7 +54,7 @@ def main():
     # ── Step 1: Download ───────────────────────────────────────────────────
     if args.step in ("download", "all"):
         from src.data.download import main as download_main
-        run_step("Download", download_main)
+        run_step("Download", download_main, months=months)
 
     # ── Step 2: Clean ──────────────────────────────────────────────────────
     if args.step in ("clean", "all"):

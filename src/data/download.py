@@ -277,13 +277,18 @@ def _generate_synthetic_weather_station(year: str, month: str, station_name: str
 
 # ── CLI ────────────────────────────────────────────────────────────────────
 
-def main():
-    parser = argparse.ArgumentParser(description="Download raw project data")
-    parser.add_argument("--months", type=int, default=3, help="Number of months to download")
-    parser.add_argument("--force", action="store_true", help="Re-download even if file exists")
-    args = parser.parse_args()
+def main(months: list[tuple] = None, force: bool = False):
+    """
+    Download everything. pipeline.py passes `months` directly; run standalone,
+    the months come from this module's own command line instead.
+    """
+    if months is None:
+        parser = argparse.ArgumentParser(description="Download raw project data")
+        parser.add_argument("--months", type=int, default=3, help="Number of months to download")
+        parser.add_argument("--force", action="store_true", help="Re-download even if file exists")
+        args = parser.parse_args()
+        months, force = TLC_MONTHS[:args.months], args.force
 
-    months = TLC_MONTHS[:args.months]
     logger.info(f"Downloading {len(months)} months of data...")
 
     # TLC zone metadata
@@ -293,8 +298,8 @@ def main():
     # Trip data + weather per month
     for year, month in months:
         logger.info(f"── {year}-{month} ──")
-        download_tlc_month(year, month, force=args.force)
-        download_noaa_weather(year, month, force=args.force)
+        download_tlc_month(year, month, force=force)
+        download_noaa_weather(year, month, force=force)
 
     logger.info("Download complete.")
 
