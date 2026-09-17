@@ -78,8 +78,9 @@ def run_first_stage(df: pd.DataFrame) -> dict:
 def run_reduced_form(df: pd.DataFrame) -> dict:
     """
     Reduced form: cancelled ~ rain_intensity_mm + controls
-    Direct effect of instrument on outcome (sanity check).
-    Should be significant — if not, something is wrong.
+    Direct effect of instrument on outcome.
+    Its size is first stage × causal effect, so a strong first stage with an
+    insignificant reduced form points to a causal effect near zero, not to a data problem.
     """
     logger.info("── Reduced Form ──")
     formula = (
@@ -155,6 +156,10 @@ def run_2sls(df: pd.DataFrame) -> dict:
 
     logger.info(f"2SLS LATE: β={coef:.5f}, SE={se:.5f}, p={pval:.4f}")
     logger.info(f"95% CI: [{float(ci.iloc[0]):.5f}, {float(ci.iloc[1]):.5f}]")
+    logger.info(
+        "Joint first-stage partial F (rain + wind): "
+        f"{float(model.first_stage.diagnostics.loc['wait_time_mins', 'f.stat']):.2f}"
+    )
 
     return {
         "model": "IV 2SLS",
@@ -164,6 +169,7 @@ def run_2sls(df: pd.DataFrame) -> dict:
         "ci_low": float(ci.iloc[0]),
         "ci_high": float(ci.iloc[1]),
         "n": int(model.nobs),
+        "joint_first_stage_f": float(model.first_stage.diagnostics.loc["wait_time_mins", "f.stat"]),
         "fitted_model": model,
     }
 
@@ -200,17 +206,35 @@ def run_hausman_test(df: pd.DataFrame, first_stage_result: dict) -> dict:
     }
 
 
-def run_placebo_instrument_test(df: pd.DataFrame) -> dict:
+def attach_next_day_rain(df: pd.DataFrame, weather: pd.DataFrame) -> pd.DataFrame:
+    """
+    Add rain_placebo: rainfall at the trip's own weather station exactly 24 hours
+    after the trip's hour. `weather` is the hourly station table from join.load_weather.
+    Rows with no reading 24 hours later get NaN.
+    """
+    future = weather[["date_hour", "station", "rain_intensity_mm"]].rename(
+        columns={"station": "nearest_station", "rain_intensity_mm": "rain_placebo"}
+    )
+    future["date_hour"] = pd.to_datetime(future["date_hour"]) - pd.Timedelta(hours=24)
+    out = df.copy()
+    out["date_hour"] = pd.to_datetime(out["date_hour"])
+    return out.merge(future, on=["date_hour", "nearest_station"], how="left")
+
+
+def run_placebo_instrument_test(df: pd.DataFrame, weather: pd.DataFrame = None) -> dict:
     """
     Placebo test: use next-day rain as instrument.
     Should have NO effect on today's cancellations (exclusion restriction check).
+
+    The placebo is joined by station and hour. Shifting rows of a trip-level table
+    does not work: with dozens of trips per hour, 24 rows back is the same hour.
     """
     logger.info("── Placebo Instrument Test ──")
-    df = df.copy().sort_values("date_hour")
-
-    # Shift rain by 24 hours
-    df["rain_placebo"] = df["rain_intensity_mm"].shift(24)
-    df_test = df.dropna(subset=["rain_placebo"])
+    if weather is None:
+        from src.data.join import load_weather
+        weather = load_weather()
+    df_test = attach_next_day_rain(df, weather).dropna(subset=["rain_placebo"])
+    logger.info(f"Placebo rows with a reading 24h later: {len(df_test):,} of {len(df):,}")
 
     formula = "cancelled ~ rain_placebo + surge_proxy + is_weekend + C(hour_of_day) + C(borough)"
     model = smf.ols(formula, data=df_test.dropna()).fit(cov_type="HC3")
@@ -250,7 +274,8 @@ def run_iv_analysis(df: pd.DataFrame = None, save: bool = True) -> dict:
     placebo = run_placebo_instrument_test(df)
 
     summary = {
-        "first_stage_f": first_stage["f_stat"],
+        "first_stage_f": first_stage["f_stat"],  # rain alone, wind as a control (pairs with wald_late)
+        "first_stage_joint_f": iv_result["joint_first_stage_f"],  # rain + wind (pairs with iv_2sls_coef)
         "first_stage_coef_rain": first_stage["coef_rain"],
         "reduced_form_coef": reduced_form["coef_rain_on_cancel"],
         "wald_late": wald,
@@ -262,6 +287,8 @@ def run_iv_analysis(df: pd.DataFrame = None, save: bool = True) -> dict:
         "hausman_pval": hausman["pval_vhat"],
         "endogenous": hausman["endogenous"],
         "placebo_passed": placebo["passed"],
+        "placebo_coef": placebo["coef_placebo"],
+        "placebo_pval": placebo["pval_placebo"],
         "n": iv_result["n"],
     }
 

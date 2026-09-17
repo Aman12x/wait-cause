@@ -2,7 +2,7 @@
 
 > **What is the causal effect of a 1-minute increase in wait time on rider cancellation probability?**
 
-Naive OLS is confounded — high-demand periods produce both longer waits *and* more cancellations, inflating the association. This project uses **hourly rainfall as an instrumental variable** (real NOAA station data) to isolate exogenous variation in wait time. The result is a textbook confounding story: the naive +3.7pp-per-minute association shrinks to a statistically-zero causal LATE once instrumented, with a strong first stage (F = 83.9) and a Hausman test confirming that OLS and IV differ significantly.
+Naive OLS is confounded — high-demand periods produce both longer waits *and* more cancellations, inflating the association. This project uses **hourly rainfall as an instrumental variable** (real NOAA station data) to isolate exogenous variation in wait time. The result is a textbook confounding story: the naive +3.7pp-per-minute association shrinks to a statistically-zero causal LATE once instrumented, with a strong first stage (joint F = 109.7 for rain and wind, 83.9 for rain alone) and a Hausman test confirming that OLS and IV differ significantly.
 
 ---
 
@@ -14,9 +14,9 @@ Naive OLS is confounded — high-demand periods produce both longer waits *and* 
 | OLS + Controls | +0.0374 (SE 0.0004) | Controls barely move it |
 | **IV 2SLS (LATE)** | **+0.0059 (p = 0.68, 95% CI −0.022 to +0.034)** | Causal estimate for rain compliers — indistinguishable from zero |
 
-- **First stage F-stat:** 83.9 (strong instrument — rain robustly shifts wait times)
+- **First stage:** the headline 2SLS uses rain and wind together, joint partial F = 109.7. Rain alone, with wind as a control, gives F = 83.9 and a LATE of +0.0081, the same conclusion from a single instrument. Both are far above the weak-instrument threshold of 10.
 - **Hausman test:** p = 0.027 → OLS and IV differ significantly, endogeneity confirmed
-- **Placebo instrument test:** passed
+- **Placebo instrument test:** passed. Rain at the same station 24 hours later has no effect on today's cancellations (coef -0.00068, p = 0.62).
 - **Causal forest (DML) heterogeneity:** mean CATE 0.038–0.041 across boroughs (Bronx highest, Staten Island lowest) and 0.035–0.043 by time of day — a flat gradient. Note these DML estimates do not use the instrument, so they inherit OLS-style confounding and sit near the OLS coefficient, consistent with the IV finding.
 - Estimated on a 200,000-row random sample (seed 42) of 54,697,055 cleaned trips, June–August 2023, with real hourly weather from three NOAA stations (JFK, LGA, Central Park).
 
@@ -120,7 +120,7 @@ The exclusion restriction above is an assumption, so `src/models/causal_dag.py` 
 | Calendar only | Yes | -0.0008 (SE 0.0143) | -0.029 to +0.027 | 109.8 |
 | No controls | No, hour and borough confound rain | +0.0014 (SE 0.0149) | -0.028 to +0.031 | 105.3 |
 
-The estimate the graph licenses is -0.0008, against +0.0059 in the headline specification. Both intervals cover zero and nearly coincide, so the collider does not change the conclusion, and the raw OLS association still overstates the effect. The joint F here covers both instruments, so it differs from the single-instrument 83.9 reported above.
+The estimate the graph licenses is -0.0008, against +0.0059 in the headline specification. Both intervals cover zero and nearly coincide, so the collider does not change the conclusion, and the raw OLS association still overstates the effect. The joint F covers both instruments, which is why it differs from the rain-only 83.9.
 
 **Testable implications.** With selection on demand, the assumed graph implies 4 conditional independences among observed variables, and 3 hold at a partial-correlation threshold of 0.02 (p-values are uninformative at this sample size, so the verdict rests on effect size). The one that separates the assumed graph from the rain-raises-demand threat is rain ⟂ weekend given hour and borough: it holds at 0.019, close to the threshold, so it is weak evidence at best. The failure is holiday ⟂ wind (0.072), in a window with two federal holidays. Weather varies by station-hour over 92 days, so none of these tests has many independent weather events behind it.
 
